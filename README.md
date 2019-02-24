@@ -2,6 +2,8 @@
 
 # Custom Post Type Registration Framework
 
+Project Location: [/wp-content/plugins/cpt-registrator](https://github.com/AnaliaMok/wp-experiments/tree/master/wp-content/plugins/cpt-registrator)
+
 ## Goals:
 
 1. Create a simple "framework" for auto-registering CPTs in Wordpress without having to remember a `require_once` statement in either your `functions.php` file or some "single source of truth" type file.
