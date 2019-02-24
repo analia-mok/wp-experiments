@@ -1,0 +1,4 @@
+name: wp-experiments
+recipe: wordpress
+config:
+  webroot: .
