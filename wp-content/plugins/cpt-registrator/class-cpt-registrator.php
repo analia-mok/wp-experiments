@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * The file that defines the core plugin class
+ *
+ * @since      1.0.0
+ * @package    CPT_Registrator
+ */
+
+
+/**
+ * The core plugin class.
+ *
+ * @since      1.0.0
+ * @package    CPT_Registrator
+ * @author     Analia Mok
+ */
 class CPTRegistrator
 {
     /**

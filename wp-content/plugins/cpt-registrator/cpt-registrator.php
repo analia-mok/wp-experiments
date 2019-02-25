@@ -14,11 +14,10 @@
  *
  * @wordpress-plugin
  * Plugin Name:       CPT Registrator
- * Plugin URI:        http://example.com/cpt-registrator-uri/
  * Description:       Plugin framework for auto-registering and defining custom post types.
  * Version:           1.0.0
  * Author:            Analia Mok
- * Author URI:        http://example.com/
+ * Author URI:        https://analiamok.netlify.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       cpt-registrator
