@@ -7,6 +7,8 @@
  * @package    CPT_Registrator
  */
 
+namespace CPT_Registrator\Base;
+
 /**
  * The Base Custom Post Type class.
  *
@@ -36,7 +38,7 @@ class BaseCustomPostType
         $this->description = $description;
     }
 
-    protected function registerCPT()
+    public function registerCPT()
     {
         $labels = array(
             'name' => _x($this->name, 'Post Type General Name', $this->text_domain),
@@ -47,7 +49,7 @@ class BaseCustomPostType
             'attributes' => __($this->name . ' Attributes', $this->text_domain),
             'all_items' => __('All ' . $this->name . 's', $this->text_domain),
             'add_new_item' => __('Add New ' . $this->name, $this->text_domain),
-            'add_new' => __('Add New' . $this->name, $this->text_domain),
+            'add_new' => __('Add New ' . $this->name, $this->text_domain),
             'new_item' => __('New ' . $this->name, $this->text_domain),
             'edit_item' => __('Edit ' . $this->name, $this->text_domain),
             'update_item' => __('Update ' . $this->name, $this->text_domain),
@@ -60,11 +62,11 @@ class BaseCustomPostType
             'set_featured_image' => __('Set featured image', $this->text_domain),
             'remove_featured_image' => __('Remove featured image', $this->text_domain),
             'use_featured_image' => __('Use as featured image', $this->text_domain),
-            'insert_into_item' => __('Insert into item', $this->text_domain),
-            'uploaded_to_this_item' => __('Uploaded to this item', $this->text_domain),
+            'insert_into_item' => __('Insert into ' . $this->name, $this->text_domain),
+            'uploaded_to_this_item' => __('Uploaded to this ' . $this->name, $this->text_domain),
             'items_list' => __('Items list', $this->text_domain),
             'items_list_navigation' => __('Items list navigation', $this->text_domain),
-            'filter_items_list' => __('Filter items list', $this->text_domain),
+            'filter_items_list' => __('Filter ' . $this->name . ' list', $this->text_domain),
         );
         $args = array(
             'label' => __($this->name, $this->text_domain),
@@ -84,12 +86,15 @@ class BaseCustomPostType
             'capability_type' => 'post',
         );
 
+        // TODO: ^^ Add dashicon option
+
         // Set Customizable values
         if (!empty($this->description)) {
             $args['description'] = __($this->description, $this->text_domain);
         }
 
-        register_post_type(strtolower($this->name), $args);
+        $cpt_qualified_name = strtolower($this->name);
+        register_post_type($cpt_qualified_name, $args);
 
         // TODO: Most likely most elsewhere
         // add_action('init', 'custom_post_type', 0);
