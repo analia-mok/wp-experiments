@@ -154,10 +154,10 @@ class CPT
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'post',
-            'supports'            => array('title', 'editor'),
+            'supports'            => array( 'title', 'editor' ),
         );
 
-        self::$args = array_merge( self::$args, $customArgs, $newArgs );
+        self::$args = array_replace( self::$args, $newArgs, $customArgs );
 
         // Set Customizable values
         if ( !empty( self::$description ) ) {
