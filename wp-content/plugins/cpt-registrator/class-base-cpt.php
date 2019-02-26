@@ -28,27 +28,76 @@ class CPT
      */
     private static $name;
 
+    /**
+     * Text Domain
+     *
+     * @var string
+     */
     private static $text_domain = 'cpt_registrator';
 
+    /**
+     * Post type description
+     *
+     * @var String
+     */
     private static $description;
 
-    private static $args = array();
+    /**
+     * Post Type arguments
+     *
+     * @var Array
+     */
+    private static $args;
 
+    /**
+     * All post type labels
+     *
+     * @var Array
+     */
     private static $labels;
 
+    /**
+     * Singleton Instance of current post type.
+     *
+     * @var CPT
+     */
     private static $instance;
 
-    public function __construct( String $name, String $description = '' ) {
+    /**
+     * Constructor
+     *
+     * Primarily for resetting static members before creating a new custom post type.
+     */
+    public function __construct( ) {
+        self::$name = '';
+        self::$description = '';
+        self::$args = array();
+    }
+
+    /**
+     * Static Constructor.
+     *
+     * Creates a new static instance with labels <pre-defined class=""></pre-defined>
+     *
+     * @param String $name
+     * @param String $description [Default='']
+     * @return CPT  singleton instance for method chaining
+     */
+    public static function create( String $name, String $description = '' ) {
+        self::$instance = new CPT();
         self::$name = $name;
         self::$description = $description;
         self::setLabels();
-    }
-
-    public static function create( String $name, String $description='' ) {
-        self::$instance = new self( $name, $description );
         return self::$instance;
     }
 
+    /**
+     * setLabels
+     *
+     * Sets all labels use in admin dashboard.
+     *
+     * @return void
+     */
     private function setLabels() {
         self::$labels = array(
             'name'                  => _x(self::$name, 'Post Type General Name', self::$text_domain),
@@ -80,8 +129,16 @@ class CPT
         );
     }
 
-    // TODO: Allow for default empty $custom for array
-    public function setArgs( $customArgs = array() ) {
+    /**
+     * setArgs
+     *
+     * Sets base arguments for defining a custom post type
+     *
+     * @param string $dashicon [Default="dashicons-admin-post"]
+     * @param array $customArgs [Default="array"] for overriding arguments defined in default
+     * @return CPT singleton instance
+     */
+    public function setArgs( $dashicon="dashicons-admin-post", $customArgs = array() ) {
         $newArgs = array(
             'label'               => __(self::$name, self::$text_domain),
             'labels'              => self::$labels,
@@ -90,18 +147,17 @@ class CPT
             'show_ui'             => true,
             'show_in_menu'        => true,
             'menu_position'       => 5,
+            'menu_icon'           => $dashicon,
             'show_in_admin_bar'   => true,
             'show_in_nav_menus'   => true,
             'has_archive'         => true,
             'exclude_from_search' => false,
             'publicly_queryable'  => true,
             'capability_type'     => 'post',
-            'supports'            => array('title'),
+            'supports'            => array('title', 'editor'),
         );
 
-        self::$args = array_merge( $newArgs, self::$args );
-
-        // TODO: ^^ Add dashicon option
+        self::$args = array_merge( self::$args, $customArgs, $newArgs );
 
         // Set Customizable values
         if ( !empty( self::$description ) ) {
@@ -111,6 +167,14 @@ class CPT
         return $this;
     }
 
+    /**
+     * setRewrite
+     *
+     * Optional method for defining the rewrite rules for this custom post type.
+     *
+     * @param String $slug
+     * @return CPT   singleton instance
+     */
     public function setRewrite( $slug ) {
         $rewrite = array(
             'slug'       => !empty( $slug ) ? $slug : strtolower( self::$name ),
@@ -122,9 +186,18 @@ class CPT
         return $this;
     }
 
+    /**
+     * register
+     *
+     * Final method that should be called in a method chain. Will register the custom post type
+     * with Wordpress.
+     *
+     * @return CPT   singleton instance
+     */
     public function register() {
         $cpt_qualified_name = strtolower( self::$name );
         register_post_type( $cpt_qualified_name, self::$args );
+        return self;
     }
 
 }
