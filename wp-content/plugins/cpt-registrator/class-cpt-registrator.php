@@ -58,7 +58,7 @@ class CPTRegistrator
 
         CPT::create( 'Recipe' )
             ->setArgs( 'dashicons-admin-appearance', array(
-                'supports'  => array( 'title' ),
+                'supports'  => array( 'title', 'excerpt' ),
             ))
             ->setRewrite( 'recipe' )
             ->register();
