@@ -26,33 +26,65 @@ class CPT
      *
      * @var String
      */
-    protected $name;
+    private static $name;
 
-    protected $text_domain = 'cpt_registrator';
+    private static $text_domain = 'cpt_registrator';
 
-    protected $description;
+    private static $description;
 
-    protected $args = array();
+    private static $args = array();
 
-    private $labels;
+    private static $labels;
 
-    protected static $singleton;
+    private static $instance;
 
     public function __construct( String $name, String $description = '' ) {
-        $this->name = $name;
-        $this->description = $description;
-        $this->setLabels();
+        self::$name = $name;
+        self::$description = $description;
+        self::setLabels();
     }
 
     public static function create( String $name, String $description='' ) {
-        CPT::$singleton = new CPT( $name, $description );
+        self::$instance = new self( $name, $description );
+        return self::$instance;
+    }
+
+    private function setLabels() {
+        self::$labels = array(
+            'name'                  => _x(self::$name, 'Post Type General Name', self::$text_domain),
+            'singular_name'         => _x(self::$name, 'Post Type Singular Name', self::$text_domain),
+            'menu_name'             => __(self::$name . 's', self::$text_domain),
+            'name_admin_bar'        => __(self::$name, self::$text_domain),
+            'archives'              => __(self::$name . ' Archives', self::$text_domain),
+            'attributes'            => __(self::$name . ' Attributes', self::$text_domain),
+            'all_items'             => __('All ' . self::$name . 's', self::$text_domain),
+            'add_new_item'          => __('Add New ' . self::$name, self::$text_domain),
+            'add_new'               => __('Add New ' . self::$name, self::$text_domain),
+            'new_item'              => __('New ' . self::$name, self::$text_domain),
+            'edit_item'             => __('Edit ' . self::$name, self::$text_domain),
+            'update_item'           => __('Update ' . self::$name, self::$text_domain),
+            'view_item'             => __('View ' . self::$name, self::$text_domain),
+            'view_items'            => __('View ' . self::$name . 's', self::$text_domain),
+            'search_items'          => __('Search ' . self::$name . 's', self::$text_domain),
+            'not_found'             => __('Not found', self::$text_domain),
+            'not_found_in_trash'    => __('Not found in Trash', self::$text_domain),
+            'featured_image'        => __('Featured Image', self::$text_domain),
+            'set_featured_image'    => __('Set featured image', self::$text_domain),
+            'remove_featured_image' => __('Remove featured image', self::$text_domain),
+            'use_featured_image'    => __('Use as featured image', self::$text_domain),
+            'insert_into_item'      => __('Insert into ' . self::$name, self::$text_domain),
+            'uploaded_to_this_item' => __('Uploaded to this ' . self::$name, self::$text_domain),
+            'items_list'            => __('Items list', self::$text_domain),
+            'items_list_navigation' => __('Items list navigation', self::$text_domain),
+            'filter_items_list'     => __('Filter ' . self::$name . ' list', self::$text_domain),
+        );
     }
 
     // TODO: Allow for default empty $custom for array
     public function setArgs( $customArgs = array() ) {
         $newArgs = array(
-            'label'               => __($this->name, $this->text_domain),
-            'labels'              => $this->labels,
+            'label'               => __(self::$name, self::$text_domain),
+            'labels'              => self::$labels,
             'hierarchical'        => false, // FUTURE TODO: Dynamically set
             'public'              => true,
             'show_ui'             => true,
@@ -67,65 +99,32 @@ class CPT
             'supports'            => array('title'),
         );
 
-        $this->args = array_merge( $newArgs, $this->args );
+        self::$args = array_merge( $newArgs, self::$args );
 
         // TODO: ^^ Add dashicon option
 
         // Set Customizable values
-        if ( !empty( $this->description ) ) {
-            $args['description'] = __( $this->description, $this->text_domain );
+        if ( !empty( self::$description ) ) {
+            self::$args['description'] = __( self::$description, self::$text_domain );
         }
 
-        // TODO: Most likely most elsewhere
-        // add_action('init', 'custom_post_type', 0);
         return $this;
-    }
-
-    private function setLabels() {
-        $this->labels = array(
-            'name'              => _x($this->name, 'Post Type General Name', $this->text_domain),
-            'singular_name'         => _x($this->name, 'Post Type Singular Name', $this->text_domain),
-            'menu_name'             => __($this->name . 's', $this->text_domain),
-            'name_admin_bar'        => __($this->name, $this->text_domain),
-            'archives'              => __($this->name . ' Archives', $this->text_domain),
-            'attributes'            => __($this->name . ' Attributes', $this->text_domain),
-            'all_items'             => __('All ' . $this->name . 's', $this->text_domain),
-            'add_new_item'          => __('Add New ' . $this->name, $this->text_domain),
-            'add_new'               => __('Add New ' . $this->name, $this->text_domain),
-            'new_item'              => __('New ' . $this->name, $this->text_domain),
-            'edit_item'             => __('Edit ' . $this->name, $this->text_domain),
-            'update_item'           => __('Update ' . $this->name, $this->text_domain),
-            'view_item'             => __('View ' . $this->name, $this->text_domain),
-            'view_items'            => __('View ' . $this->name . 's', $this->text_domain),
-            'search_items'          => __('Search ' . $this->name . 's', $this->text_domain),
-            'not_found'             => __('Not found', $this->text_domain),
-            'not_found_in_trash'    => __('Not found in Trash', $this->text_domain),
-            'featured_image'        => __('Featured Image', $this->text_domain),
-            'set_featured_image'    => __('Set featured image', $this->text_domain),
-            'remove_featured_image' => __('Remove featured image', $this->text_domain),
-            'use_featured_image'    => __('Use as featured image', $this->text_domain),
-            'insert_into_item'      => __('Insert into ' . $this->name, $this->text_domain),
-            'uploaded_to_this_item' => __('Uploaded to this ' . $this->name, $this->text_domain),
-            'items_list'            => __('Items list', $this->text_domain),
-            'items_list_navigation' => __('Items list navigation', $this->text_domain),
-            'filter_items_list'     => __('Filter ' . $this->name . ' list', $this->text_domain),
-        );
     }
 
     public function setRewrite( $slug ) {
         $rewrite = array(
-            'slug'       => !empty( $slug ) ? $slug : strtolower( $this->name ),
+            'slug'       => !empty( $slug ) ? $slug : strtolower( self::$name ),
             'with_front' => false,
         );
 
-        $this->args['rewrite'] = $rewrite;
+        self::$args['rewrite'] = $rewrite;
 
         return $this;
     }
 
     public function register() {
-        $cpt_qualified_name = strtolower( $this->name );
-        register_post_type( $cpt_qualified_name, $this->args );
+        $cpt_qualified_name = strtolower( self::$name );
+        register_post_type( $cpt_qualified_name, self::$args );
     }
 
 }

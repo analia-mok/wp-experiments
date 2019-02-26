@@ -71,6 +71,6 @@ require plugin_dir_path( __FILE__ ) . 'class-cpt-registrator.php';
  * @since    1.0.0
  */
 function run_cpt_registrator() {
-	\CPT_Registrator\CPTRegistrator::register_cpts();
+	add_action( 'init', '\CPT_Registrator\CPTRegistrator::register_cpts', 0);
 }
 run_cpt_registrator();

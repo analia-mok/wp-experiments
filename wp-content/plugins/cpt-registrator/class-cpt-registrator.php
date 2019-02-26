@@ -26,8 +26,7 @@ class CPTRegistrator
      * @return void
      * @since 1.0.0
      */
-    public static function activate()
-    {
+    public static function activate() {
         CPTRegistrator::register_cpts();
     }
 
@@ -37,17 +36,25 @@ class CPTRegistrator
      * @return void
      * @since 1.0.0
      */
-    public static function deactivate()
-    {
+    public static function deactivate() {
         // Nothing...
     }
 
-    public static function register_cpts()
-    {
+    public static function defineCPTS() {
+        // Simple Book Type.
+        CPT::create( 'Book' )
+            ->setArgs()
+            ->setRewrite( 'book' )
+            ->register();
+    }
+
+    public static function register_cpts() {
         // TODO: Take from a config file.
-        $book_cpt = new CPT('Book');
-        $book_cpt->setArgs()
-                 ->setRewrite('book');
-        add_action('init', array($book_cpt, 'register'), 0);
+        // add_action( 'init', 'CPTRegistrator::defineCPTS', 0 );
+        // Simple Book Type.
+        CPT::create( 'Book' )
+            ->setArgs()
+            ->setRewrite( 'book' )
+            ->register();
     }
 }
