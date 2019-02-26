@@ -9,7 +9,7 @@
 
 namespace CPT_Registrator;
 
-use \CPT_Registrator\Base\BaseCustomPostType; // FIXME:
+use \CPT_Registrator\Base\CPT;
 
 /**
  * The core plugin class.
@@ -45,8 +45,9 @@ class CPTRegistrator
     public static function register_cpts()
     {
         // TODO: Take from a config file.
-        $book_cpt = new BaseCustomPostType('Book');
-        // add_action('init', $book_cpt->registerCPT(), 0);
-        add_action('init', array($book_cpt, 'registerCPT'), 0);
+        $book_cpt = new CPT('Book');
+        $book_cpt->setArgs()
+                 ->setRewrite('book');
+        add_action('init', array($book_cpt, 'register'), 0);
     }
 }

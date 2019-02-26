@@ -18,7 +18,7 @@ namespace CPT_Registrator\Base;
  * @package    CPT_Registrator
  * @author     Analia Mok
  */
-class BaseCustomPostType
+class CPT
 {
 
     /**
@@ -32,72 +32,100 @@ class BaseCustomPostType
 
     protected $description;
 
-    public function __construct(String $name, String $description = '')
-    {
+    protected $args = array();
+
+    private $labels;
+
+    protected static $singleton;
+
+    public function __construct( String $name, String $description = '' ) {
         $this->name = $name;
         $this->description = $description;
+        $this->setLabels();
     }
 
-    public function registerCPT()
-    {
-        $labels = array(
-            'name' => _x($this->name, 'Post Type General Name', $this->text_domain),
-            'singular_name' => _x($this->name, 'Post Type Singular Name', $this->text_domain),
-            'menu_name' => __($this->name . 's', $this->text_domain),
-            'name_admin_bar' => __($this->name, $this->text_domain),
-            'archives' => __($this->name . ' Archives', $this->text_domain),
-            'attributes' => __($this->name . ' Attributes', $this->text_domain),
-            'all_items' => __('All ' . $this->name . 's', $this->text_domain),
-            'add_new_item' => __('Add New ' . $this->name, $this->text_domain),
-            'add_new' => __('Add New ' . $this->name, $this->text_domain),
-            'new_item' => __('New ' . $this->name, $this->text_domain),
-            'edit_item' => __('Edit ' . $this->name, $this->text_domain),
-            'update_item' => __('Update ' . $this->name, $this->text_domain),
-            'view_item' => __('View ' . $this->name, $this->text_domain),
-            'view_items' => __('View ' . $this->name . 's', $this->text_domain),
-            'search_items' => __('Search ' . $this->name . 's', $this->text_domain),
-            'not_found' => __('Not found', $this->text_domain),
-            'not_found_in_trash' => __('Not found in Trash', $this->text_domain),
-            'featured_image' => __('Featured Image', $this->text_domain),
-            'set_featured_image' => __('Set featured image', $this->text_domain),
-            'remove_featured_image' => __('Remove featured image', $this->text_domain),
-            'use_featured_image' => __('Use as featured image', $this->text_domain),
-            'insert_into_item' => __('Insert into ' . $this->name, $this->text_domain),
-            'uploaded_to_this_item' => __('Uploaded to this ' . $this->name, $this->text_domain),
-            'items_list' => __('Items list', $this->text_domain),
-            'items_list_navigation' => __('Items list navigation', $this->text_domain),
-            'filter_items_list' => __('Filter ' . $this->name . ' list', $this->text_domain),
-        );
-        $args = array(
-            'label' => __($this->name, $this->text_domain),
-            'labels' => $labels,
-            'supports' => false,
-            // 'taxonomies' => array('category', 'post_tag'),
-            'hierarchical' => false, // FUTURE TODO: Dynamically set
-            'public' => true,
-            'show_ui' => true,
-            'show_in_menu' => true,
-            'menu_position' => 5,
-            'show_in_admin_bar' => true,
-            'show_in_nav_menus' => true,
-            'has_archive' => true,
+    public static function create( String $name, String $description='' ) {
+        CPT::$singleton = new CPT( $name, $description );
+    }
+
+    // TODO: Allow for default empty $custom for array
+    public function setArgs( $customArgs = array() ) {
+        $newArgs = array(
+            'label'               => __($this->name, $this->text_domain),
+            'labels'              => $this->labels,
+            'hierarchical'        => false, // FUTURE TODO: Dynamically set
+            'public'              => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'menu_position'       => 5,
+            'show_in_admin_bar'   => true,
+            'show_in_nav_menus'   => true,
+            'has_archive'         => true,
             'exclude_from_search' => false,
-            'publicly_queryable' => true,
-            'capability_type' => 'post',
+            'publicly_queryable'  => true,
+            'capability_type'     => 'post',
+            'supports'            => array('title'),
         );
+
+        $this->args = array_merge( $newArgs, $this->args );
 
         // TODO: ^^ Add dashicon option
 
         // Set Customizable values
-        if (!empty($this->description)) {
-            $args['description'] = __($this->description, $this->text_domain);
+        if ( !empty( $this->description ) ) {
+            $args['description'] = __( $this->description, $this->text_domain );
         }
-
-        $cpt_qualified_name = strtolower($this->name);
-        register_post_type($cpt_qualified_name, $args);
 
         // TODO: Most likely most elsewhere
         // add_action('init', 'custom_post_type', 0);
+        return $this;
+    }
+
+    private function setLabels() {
+        $this->labels = array(
+            'name'              => _x($this->name, 'Post Type General Name', $this->text_domain),
+            'singular_name'         => _x($this->name, 'Post Type Singular Name', $this->text_domain),
+            'menu_name'             => __($this->name . 's', $this->text_domain),
+            'name_admin_bar'        => __($this->name, $this->text_domain),
+            'archives'              => __($this->name . ' Archives', $this->text_domain),
+            'attributes'            => __($this->name . ' Attributes', $this->text_domain),
+            'all_items'             => __('All ' . $this->name . 's', $this->text_domain),
+            'add_new_item'          => __('Add New ' . $this->name, $this->text_domain),
+            'add_new'               => __('Add New ' . $this->name, $this->text_domain),
+            'new_item'              => __('New ' . $this->name, $this->text_domain),
+            'edit_item'             => __('Edit ' . $this->name, $this->text_domain),
+            'update_item'           => __('Update ' . $this->name, $this->text_domain),
+            'view_item'             => __('View ' . $this->name, $this->text_domain),
+            'view_items'            => __('View ' . $this->name . 's', $this->text_domain),
+            'search_items'          => __('Search ' . $this->name . 's', $this->text_domain),
+            'not_found'             => __('Not found', $this->text_domain),
+            'not_found_in_trash'    => __('Not found in Trash', $this->text_domain),
+            'featured_image'        => __('Featured Image', $this->text_domain),
+            'set_featured_image'    => __('Set featured image', $this->text_domain),
+            'remove_featured_image' => __('Remove featured image', $this->text_domain),
+            'use_featured_image'    => __('Use as featured image', $this->text_domain),
+            'insert_into_item'      => __('Insert into ' . $this->name, $this->text_domain),
+            'uploaded_to_this_item' => __('Uploaded to this ' . $this->name, $this->text_domain),
+            'items_list'            => __('Items list', $this->text_domain),
+            'items_list_navigation' => __('Items list navigation', $this->text_domain),
+            'filter_items_list'     => __('Filter ' . $this->name . ' list', $this->text_domain),
+        );
+    }
+
+    public function setRewrite( $slug ) {
+        $rewrite = array(
+            'slug'       => !empty( $slug ) ? $slug : strtolower( $this->name ),
+            'with_front' => false,
+        );
+
+        $this->args['rewrite'] = $rewrite;
+
+        return $this;
+    }
+
+    public function register() {
+        $cpt_qualified_name = strtolower( $this->name );
+        register_post_type( $cpt_qualified_name, $this->args );
     }
 
 }
