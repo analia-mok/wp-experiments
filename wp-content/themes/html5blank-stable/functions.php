@@ -8,6 +8,13 @@
 /*------------------------------------*\
 	External Modules/Files
 \*------------------------------------*/
+require_once ( "inc/custom_post_types.php" ) ;
+
+// Alterative require
+function require_cpt_config(){
+    require_once ('inc/cpt_config.php');
+}
+add_action( 'init', 'require_cpt_config', 10 );
 
 // Load any external files you have here
 

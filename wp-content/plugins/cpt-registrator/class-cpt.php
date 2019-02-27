@@ -199,7 +199,11 @@ class CPT
      * @return CPT   singleton instance
      */
     public function register() {
+        // Sanitize give label name.
         $cpt_qualified_name = strtolower( self::$name );
+        $cpt_qualified_name = str_replace(' ', '_', $cpt_qualified_name);
+
+        // Register Custom Post Type.
         register_post_type( $cpt_qualified_name, self::$args );
         return self;
     }
