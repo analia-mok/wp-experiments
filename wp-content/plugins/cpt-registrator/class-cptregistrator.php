@@ -52,10 +52,10 @@ class CPTRegistrator
     public static function register_cpts() {
         // TODO: Take from a config file. OR a filter
         // Simple Book Type.
-        CPT::create( 'Book' )
-            ->setArgs('dashicons-book-alt')
-            ->setRewrite( 'book' )
-            ->register();
+        // CPT::create( 'Book' )
+        //     ->setArgs('dashicons-book-alt')
+        //     ->setRewrite( 'book' )
+        //     ->register();
 
         CPT::create( 'Recipe' )
             ->setArgs( Dashicons::$admin_appearance , array(
