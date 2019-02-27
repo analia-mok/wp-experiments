@@ -41,7 +41,7 @@ define( 'CPT_REGISTRATOR_VERSION', '1.0.0' );
  * @return void
  */
 function activate_cpt_registrator() {
-	require_once plugin_dir_path( __FILE__ ) . 'class-cpt-registrator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'class-cptregistrator.php';
 	CPTRegistrator::activate();
 }
 
@@ -51,7 +51,7 @@ function activate_cpt_registrator() {
  * @return void
  */
 function deactivate_cpt_registrator() {
-	require_once plugin_dir_path( __FILE__ ) . 'class-cpt-registrator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'class-cptregistrator.php';
 	CPTRegistrator::deactivate();
 }
 
@@ -59,11 +59,11 @@ register_activation_hook( __FILE__, 'activate_cpt_registrator' );
 register_deactivation_hook( __FILE__, 'deactivate_cpt_registrator' );
 
 /**
- * The core plugin class.
+ * The core plugin classes.
  */
 
-require plugin_dir_path( __FILE__ ) . 'class-base-cpt.php';
-require plugin_dir_path( __FILE__ ) . 'class-cpt-registrator.php';
+require plugin_dir_path( __FILE__ ) . 'class-cpt.php';
+require plugin_dir_path( __FILE__ ) . 'class-cptregistrator.php';
 
 /**
  * Begins execution of the plugin.

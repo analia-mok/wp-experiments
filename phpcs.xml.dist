@@ -9,7 +9,7 @@
 	<exclude-pattern>./wp-*.php</exclude-pattern>
 	<exclude-pattern>./index.php</exclude-pattern>
 	<exclude-pattern>./xmlrpc.php</exclude-pattern>
-	<exclude-pattern>./wp-content/plugins/*</exclude-pattern>
+	<exclude-pattern>./wp-content/plugins/redux-framework/*</exclude-pattern>
 
 	<!-- Exclude the Composer Vendor directory. -->
 	<exclude-pattern>/vendor/*</exclude-pattern>
