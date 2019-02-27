@@ -157,7 +157,11 @@ class CPT
             'supports'            => array( 'title', 'editor' ),
         );
 
-        self::$args = array_replace( self::$args, $newArgs, $customArgs );
+        self::$args = array_replace( self::$args, $newArgs );
+
+        if ( !empty($customArgs) ){
+            self::$args = array_replace( self::$args, $customArgs );
+        }
 
         // Set Customizable values
         if ( !empty( self::$description ) ) {
