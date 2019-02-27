@@ -20,6 +20,10 @@ namespace CPT_Registrator\Base;
  */
 class CPT
 {
+    /**
+     * Naming prefix for all custom post types.
+     */
+    private static $prefix = '';
 
     /**
      * Singular version of this CPT's name.
@@ -91,6 +95,15 @@ class CPT
         return self::$instance;
     }
 
+    public static function setPrefix( String $prefix ) {
+
+        // Sanitize prefix.
+        $sanitized_prefix = str_replace(' ', '_', $prefix);
+
+        self::$prefix = $sanitized_prefix;
+        return self::$instance;
+    }
+
     /**
      * setLabels
      *
@@ -159,7 +172,7 @@ class CPT
 
         self::$args = array_replace( self::$args, $newArgs );
 
-        if ( !empty($customArgs) ){
+        if ( !empty( $customArgs ) ){
             self::$args = array_replace( self::$args, $customArgs );
         }
 
@@ -201,7 +214,14 @@ class CPT
     public function register() {
         // Sanitize give label name.
         $cpt_qualified_name = strtolower( self::$name );
-        $cpt_qualified_name = str_replace(' ', '_', $cpt_qualified_name);
+        $cpt_qualified_name = str_replace( ' ', '_', $cpt_qualified_name );
+
+        // Apply any prefixes.
+        if ( !empty( self::$prefix ) ) {
+            $cpt_qualified_name = self::$prefix . $cpt_qualified_name;
+        }
+
+        // echo wp_die(var_dump($cpt_qualified_name));
 
         // Register Custom Post Type.
         register_post_type( $cpt_qualified_name, self::$args );

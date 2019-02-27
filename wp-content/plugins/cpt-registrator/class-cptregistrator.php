@@ -57,11 +57,11 @@ class CPTRegistrator
         //     ->setRewrite( 'book' )
         //     ->register();
 
-        CPT::create( 'Recipe' )
-            ->setArgs( Dashicons::$admin_appearance , array(
-                'supports'  => array( 'title', 'excerpt' ),
-            ))
-            ->setRewrite( 'recipe' )
-            ->register();
+        // CPT::create( 'Recipe' )
+        //     ->setArgs( Dashicons::$admin_appearance , array(
+        //         'supports'  => array( 'title', 'excerpt' ),
+        //     ))
+        //     ->setRewrite( 'recipe' )
+        //     ->register();
     }
 }

@@ -15,4 +15,4 @@ function register_custom_post_types(){
         ->register();
 }
 
-add_action( 'init', 'register_custom_post_types', 10 );
+// add_action( 'init', 'register_custom_post_types', 10 );
