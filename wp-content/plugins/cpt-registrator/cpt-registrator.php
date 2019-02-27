@@ -62,6 +62,7 @@ register_deactivation_hook( __FILE__, 'deactivate_cpt_registrator' );
  * The core plugin classes.
  */
 
+require plugin_dir_path( __FILE__ ) . 'helpers/class-dashicons.php';
 require plugin_dir_path( __FILE__ ) . 'class-cpt.php';
 require plugin_dir_path( __FILE__ ) . 'class-cptregistrator.php';
 

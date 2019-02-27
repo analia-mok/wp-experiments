@@ -10,6 +10,7 @@
 namespace CPT_Registrator;
 
 use \CPT_Registrator\Base\CPT;
+use \CPT_Registrator\Helpers\Dashicons; // TODO: Remove. For testing only
 
 /**
  * The core plugin class.
@@ -57,7 +58,7 @@ class CPTRegistrator
             ->register();
 
         CPT::create( 'Recipe' )
-            ->setArgs( 'dashicons-admin-appearance', array(
+            ->setArgs( Dashicons::$admin_appearance , array(
                 'supports'  => array( 'title', 'excerpt' ),
             ))
             ->setRewrite( 'recipe' )
